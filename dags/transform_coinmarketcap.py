@@ -81,8 +81,6 @@ def transform_coinmarketcap_data(**kwargs):
         print("ADVERTENCIA: No se generaron registros procesados de CoinMarketCap.")
         return None
 
-    # <<-- CAMBIO CLAVE AQUÍ: ELIMINADA LA LÓGICA DE CARGA Y XCOM PUSH DIRECTO -->>
-    # La carga se hará en load_mongo.py
-    # Solo retornamos los datos procesados para que el PythonOperator los ponga en XCom
+
     print(f"Registros transformados de CoinMarketCap: {len(processed_records)}")
-    return processed_records # Retorna los datos procesados para XCom
+    return processed_records 

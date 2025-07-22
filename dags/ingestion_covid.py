@@ -41,8 +41,6 @@ def extract_and_load_raw_covid_data(**kwargs):
         raw_api_response['ingestion_timestamp'] = datetime.now().isoformat()
         raw_api_response['execution_date'] = fixed_date # Usar la fecha fija como identificador
 
-        # <<-- CAMBIO CLAVE AQUÍ: replace_one para idempotencia -->>
-        # Busca un documento con la misma fecha de ejecución y lo reemplaza, o lo inserta si no existe.
         raw_collection.replace_one(
             {"execution_date": fixed_date}, # Filtro para encontrar el documento
             raw_api_response,              # Nuevo documento para insertar/reemplazar

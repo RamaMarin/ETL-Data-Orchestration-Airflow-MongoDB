@@ -32,7 +32,6 @@ def transform_covid_data(**kwargs):
             "active_daily_change": raw_data.get("active_diff", 0),
             "fatality_rate": raw_data.get("fatality_rate", 0.0),
             "country_iso": raw_data.get("iso", "MEX"),
-            # Ya no se añade 'etl_execution_date' si no es dinámico
         }
 
         transformed_record["is_high_deaths_day"] = transformed_record["deaths_daily_change"] > 100

@@ -65,7 +65,6 @@ def transform_worldbank_data(**kwargs):
         else:
             processed_record["population_category"] = "Smaller Population (<50M)"
         
-        # Añadir un timestamp de la transformación para trazabilidad
         processed_record['transformation_timestamp'] = datetime.now().isoformat()
         
         print("Datos de población transformados exitosamente.")

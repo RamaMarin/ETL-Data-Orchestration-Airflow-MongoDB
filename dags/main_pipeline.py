@@ -114,12 +114,3 @@ with DAG(
     # Definición del flujo de tareas para el Banco Mundial
     extract_and_load_raw_worldbank_task >> transform_worldbank_task >> load_processed_worldbank_task
 
-    # --- Definir dependencias entre los pipelines (opcional) ---
-    # Por defecto, al estar en el mismo DAG, Airflow los ejecutará cuando pueda.
-    # Si quieres que se ejecuten en paralelo, no añades más dependencias.
-    # Si quieres que uno espere a otro (ej. COVID termine antes que Cripto y Cripto antes que Banco Mundial):
-    # load_processed_covid_task >> extract_and_load_raw_coinmarketcap_task
-    # load_processed_coinmarketcap_task >> extract_and_load_raw_worldbank_task
-    # Esto crearía una secuencia lineal de 9 tareas, cumpliendo el requisito de +5 tareas.
-    # Si no pones más dependencias, Airflow puede ejecutar los 3 pipelines en paralelo.
-    # Para cumplir el requisito de 5 tareas, ya tienes 9 si los dejas independientes así.

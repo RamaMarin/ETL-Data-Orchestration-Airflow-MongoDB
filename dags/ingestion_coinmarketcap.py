@@ -9,7 +9,7 @@ MONGO_CONNECTION_STRING = "mongodb+srv://rama_marin:Peta2017@bigdataupy5b.wk9joe
 DATABASE_NAME = "crypto_data" # Nueva base de datos para criptomonedas
 RAW_COLLECTION_NAME = "raw_coinmarketcap_listings" # Colección para datos crudos de CoinMarketCap
 
-# --- TU API KEY DE COINMARKETCAP ---
+# --- API KEY DE COINMARKETCAP ---
 COINMARKETCAP_API_KEY = "0590c2a5-d251-4b21-859e-11767ca74abc"
 
 def extract_and_load_raw_coinmarketcap_data(**kwargs):
@@ -51,12 +51,10 @@ def extract_and_load_raw_coinmarketcap_data(**kwargs):
         db = client[DATABASE_NAME]
         raw_collection = db[RAW_COLLECTION_NAME]
         
-        # <<-- CAMBIO CLAVE AQUÍ: ELIMINAR DOCUMENTOS ANTERIORES -->>
         print(f"Limpiando la colección {RAW_COLLECTION_NAME} antes de insertar nuevos datos crudos...")
         raw_collection.delete_many({}) # Elimina todos los documentos de la colección
         print("Colección de datos crudos limpiada exitosamente.")
 
-        # Añade un timestamp a los datos crudos para trazabilidad
         raw_api_response['ingestion_timestamp'] = datetime.now().isoformat()
         
         raw_collection.insert_one(raw_api_response) 

@@ -41,13 +41,12 @@ def load_processed_data_to_mongo(**kwargs):
     try:
         client = pymongo.MongoClient(MONGO_CONNECTION_STRING)
         
-        # <<-- CAMBIO CLAVE AQUÍ: Añadir la lógica para la base de datos de población -->>
         if "covid" in collection_name:
             db_name = "covid_db"
         elif "coinmarketcap" in collection_name:
             db_name = "crypto_data"
-        elif "worldbank" in collection_name: # <-- AÑADIDA ESTA LÍNEA
-            db_name = "population_data"     # <-- Y ESTA LÍNEA
+        elif "worldbank" in collection_name: 
+            db_name = "population_data"    
         else:
             raise ValueError(f"Base de datos no definida para la colección: {collection_name}")
 

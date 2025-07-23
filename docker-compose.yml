@@ -37,6 +37,7 @@ services:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor # Executor para desarrollo local
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql://airflow:airflow@postgres/airflow # Conexión a la DB de Airflow
       - AIRFLOW__CORE__ENABLE_XCOM_PICKLING=True # <-- AÑADIDO: Habilita XCom Pickling
+      - PYTHONPATH=/opt/airflow/utils
     volumes:
       - ./dags:/opt/airflow/dags # Sincroniza tu carpeta 'dags' local con el contenedor
       - ./logs:/opt/airflow/logs # Sincroniza la carpeta 'logs' para ver logs en tu máquina
@@ -67,6 +68,7 @@ services:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql://airflow:airflow@postgres/airflow
       - AIRFLOW__CORE__ENABLE_XCOM_PICKLING=True # <-- AÑADIDO: Habilita XCom Pickling
+      - PYTHONPATH=/opt/airflow/utils
     volumes:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
@@ -94,7 +96,6 @@ services:
       - "8501:8501" # Puerto para acceder al dashboard de Streamlit
     volumes:
       - ./streamlit_app:/app # Sincroniza la carpeta de tu app Streamlit
-      - ./utils:/app/utils # Sincroniza 'utils' para que Streamlit pueda usar tus módulos de conexión/transformación
     depends_on:
       - mongodb # Streamlit necesitará MongoDB para obtener los datos
     command: streamlit run app.py --server.port 8501 --server.address 0.0.0.0 # Comando para iniciar la aplicación Streamlit

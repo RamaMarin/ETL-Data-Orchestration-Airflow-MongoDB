@@ -3,9 +3,10 @@ import pymongo
 import pandas as pd
 from datetime import datetime
 import plotly.express as px
+from mongo_utils import get_mongo_client # <<-- AÑADIDO: Importar la función de conexión
 
-# --- Configuración de MongoDB Atlas ---
-MONGO_CONNECTION_STRING = "mongodb+srv://rama_marin:Peta2017@bigdataupy5b.wk9joeh.mongodb.net/?retryWrites=true&w=majority&appName=BigDataUpy5B"
+# ELIMINAR ESTA LÍNEA:
+# MONGO_CONNECTION_STRING = "mongodb+srv://rama_marin:Peta2017@bigdataupy5b.wk9joeh.mongodb.net/?retryWrites=true&w=majority&appName=BigDataUpy5B"
 
 # --- Nombres de DB y Colecciones para COVID-19 ---
 COVID_DATABASE_NAME = "covid_db"
@@ -35,7 +36,9 @@ st.write(
 def get_processed_covid_data():
     client = None
     try:
-        client = pymongo.MongoClient(MONGO_CONNECTION_STRING)
+        # CAMBIAR ESTA LÍNEA:
+        # client = pymongo.MongoClient(MONGO_CONNECTION_STRING)
+        client = get_mongo_client() # <<-- CAMBIADO: Usar la función centralizada
         db = client[COVID_DATABASE_NAME]
         collection = db[COVID_PROCESSED_COLLECTION]
         
@@ -50,7 +53,9 @@ def get_processed_covid_data():
         df = df.sort_values(by='date').reset_index(drop=True)
         return df
     except pymongo.errors.ConnectionFailure as e:
-        st.error(f"Error de conexión a MongoDB Atlas para datos de COVID: {e}.")
+        # CAMBIAR MENSAJE DE ERROR:
+        # st.error(f"Error de conexión a MongoDB Atlas para datos de COVID: {e}.")
+        st.error(f"Error de conexión a MongoDB local para datos de COVID: {e}.") # <<-- CAMBIADO
         return pd.DataFrame()
     except Exception as e:
         st.error(f"Error al cargar datos de COVID desde MongoDB: {e}")
@@ -64,7 +69,9 @@ def get_processed_covid_data():
 def get_processed_crypto_data():
     client = None
     try:
-        client = pymongo.MongoClient(MONGO_CONNECTION_STRING)
+        # CAMBIAR ESTA LÍNEA:
+        # client = pymongo.MongoClient(MONGO_CONNECTION_STRING)
+        client = get_mongo_client() # <<-- CAMBIADO: Usar la función centralizada
         db = client[CRYPTO_DATABASE_NAME]
         collection = db[CRYPTO_PROCESSED_COLLECTION]
         
@@ -81,7 +88,9 @@ def get_processed_crypto_data():
             
         return df
     except pymongo.errors.ConnectionFailure as e:
-        st.error(f"Error de conexión a MongoDB Atlas para datos de cripto: {e}.")
+        # CAMBIAR MENSAJE DE ERROR:
+        # st.error(f"Error de conexión a MongoDB Atlas para datos de cripto: {e}.")
+        st.error(f"Error de conexión a MongoDB local para datos de cripto: {e}.") # <<-- CAMBIADO
         return pd.DataFrame()
     except Exception as e:
         st.error(f"Error al cargar datos de cripto desde MongoDB: {e}")
@@ -95,7 +104,9 @@ def get_processed_crypto_data():
 def get_processed_population_data():
     client = None
     try:
-        client = pymongo.MongoClient(MONGO_CONNECTION_STRING)
+        # CAMBIAR ESTA LÍNEA:
+        # client = pymongo.MongoClient(MONGO_CONNECTION_STRING)
+        client = get_mongo_client() # <<-- CAMBIADO: Usar la función centralizada
         db = client[POPULATION_DATABASE_NAME]
         collection = db[POPULATION_PROCESSED_COLLECTION]
         
@@ -114,7 +125,9 @@ def get_processed_population_data():
         df = df.sort_values(by='year', ascending=False).reset_index(drop=True)
         return df
     except pymongo.errors.ConnectionFailure as e:
-        st.error(f"Error de conexión a MongoDB Atlas para datos de población: {e}.")
+        # CAMBIAR MENSAJE DE ERROR:
+        # st.error(f"Error de conexión a MongoDB Atlas para datos de población: {e}.")
+        st.error(f"Error de conexión a MongoDB local para datos de población: {e}.") # <<-- CAMBIADO
         return pd.DataFrame()
     except Exception as e:
         st.error(f"Error al cargar datos de población desde MongoDB: {e}")

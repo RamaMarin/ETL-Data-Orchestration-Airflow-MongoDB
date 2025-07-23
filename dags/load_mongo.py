@@ -3,8 +3,8 @@ from datetime import datetime
 import pymongo
 import json
 from bson.objectid import ObjectId
+from mongo_utils import get_mongo_client # Importación directa, como lo tienes ahora
 
-MONGO_CONNECTION_STRING = "mongodb+srv://rama_marin:Peta2017@bigdataupy5b.wk9joeh.mongodb.net/?retryWrites=true&w=majority&appName=BigDataUpy5B"
 
 def convert_objectid_to_str(obj):
     if isinstance(obj, dict):
@@ -39,7 +39,7 @@ def load_processed_data_to_mongo(**kwargs):
 
     client = None
     try:
-        client = pymongo.MongoClient(MONGO_CONNECTION_STRING)
+        client = get_mongo_client() # Usar la función centralizada
         
         if "covid" in collection_name:
             db_name = "covid_db"
@@ -54,25 +54,35 @@ def load_processed_data_to_mongo(**kwargs):
         collection = db[collection_name]
         
         print(f"Limpiando la colección {collection_name} antes de insertar nuevos datos...")
-        collection.delete_many({})
-        print("Colección limpiada exitosamente.")
+        # Aseguramos que la eliminación se completa antes de la inserción
+        delete_result = collection.delete_many({})
+        print(f"Colección limpiada exitosamente. Documentos eliminados: {delete_result.deleted_count}.")
 
         cleaned_data_for_mongo = convert_objectid_to_str(processed_data)
 
         if isinstance(cleaned_data_for_mongo, list):
-            collection.insert_many(cleaned_data_for_mongo)
-        else:
-            collection.insert_one(cleaned_data_for_mongo)
-
-        print(f"Datos cargados exitosamente en MongoDB en {db_name}.{collection_name}.")
-        print(f"Registros cargados (procesados): {len(cleaned_data_for_mongo) if isinstance(cleaned_data_for_mongo, list) else 1} en {collection_name}")
+            if cleaned_data_for_mongo: # Solo insertar si la lista no está vacía
+                result = collection.insert_many(cleaned_data_for_mongo)
+                print(f"Datos cargados exitosamente en MongoDB en {db_name}.{collection_name}.")
+                print(f"Registros insertados (procesados): {len(result.inserted_ids)} en {collection_name}")
+            else:
+                print(f"ADVERTENCIA: La lista de datos para {collection_name} está vacía, no se insertó nada.")
+        else: # Asumimos que es un solo diccionario para insert_one
+            result = collection.insert_one(cleaned_data_for_mongo)
+            print(f"Datos cargados exitosamente en MongoDB en {db_name}.{collection_name}.")
+            print(f"Registros insertados (procesados): 1 en {collection_name} (ID: {result.inserted_id})")
+        
+        # Una forma extra de asegurar que las operaciones se han confirmado antes de cerrar la conexión
+        # Puedes añadir un pequeño sleep si el problema persiste, pero no es ideal
+        # import time
+        # time.sleep(0.5) 
 
     except pymongo.errors.ConnectionFailure as e:
-        print(f"Error de conexión a MongoDB Atlas durante la carga en '{collection_name}': {e}")
+        print(f"Error de conexión a MongoDB local durante la carga en '{collection_name}': {e}") # Corregido a "local"
         raise
     except Exception as e:
         print(f"Error inesperado durante la carga en '{collection_name}': {e}")
         raise
     finally:
         if client:
-            client.close()
+            client.close() # Asegurar que la conexión se cierra

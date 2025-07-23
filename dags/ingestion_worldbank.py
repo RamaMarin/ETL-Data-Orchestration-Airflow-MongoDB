@@ -3,9 +3,11 @@ from datetime import datetime
 import requests
 import pymongo
 import json
+from mongo_utils import get_mongo_client # <<-- AÑADIDO: Importar la función de conexión
 
-# Configuración de MongoDB para datos crudos del Banco Mundial
-MONGO_CONNECTION_STRING = "mongodb+srv://rama_marin:Peta2017@bigdataupy5b.wk9joeh.mongodb.net/?retryWrites=true&w=majority&appName=BigDataUpy5B"
+# ELIMINAR ESTA LÍNEA:
+# MONGO_CONNECTION_STRING = "mongodb+srv://rama_marin:Peta2017@bigdataupy5b.wk9joeh.mongodb.net/?retryWrites=true&w=majority&appName=BigDataUpy5B"
+
 DATABASE_NAME = "population_data" # Nueva base de datos para datos de población
 RAW_COLLECTION_NAME = "raw_worldbank_population" # Colección para datos crudos de población
 
@@ -39,10 +41,12 @@ def extract_and_load_raw_worldbank_data(**kwargs):
             raise ValueError("La API del Banco Mundial no devolvió los datos esperados.")
 
         # Tomamos el primer (y único) registro de datos de población para el año
-        population_data_record = raw_api_response[1][0] 
+        population_data_record = raw_api_response[1][0]
         
         # --- Almacenar datos crudos en MongoDB (con idempotencia) ---
-        client = pymongo.MongoClient(MONGO_CONNECTION_STRING)
+        # CAMBIAR ESTA LÍNEA:
+        # client = pymongo.MongoClient(MONGO_CONNECTION_STRING)
+        client = get_mongo_client() # <<-- CAMBIADO: Usar la función centralizada
         db = client[DATABASE_NAME]
         raw_collection = db[RAW_COLLECTION_NAME]
         
@@ -56,7 +60,7 @@ def extract_and_load_raw_worldbank_data(**kwargs):
         print(f"Datos crudos de población para {country_code} en {year} cargados/actualizados exitosamente en {DATABASE_NAME}.{RAW_COLLECTION_NAME}.")
         
         # Pasa el registro de datos de población a la siguiente tarea (transformación) via XCom
-        ti.xcom_push(key="raw_worldbank_data_for_transform", value=population_data_record) 
+        ti.xcom_push(key="raw_worldbank_data_for_transform", value=population_data_record)
         
         print(f"Registros extraídos de Banco Mundial (crudos): 1")
 

@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir streamlit pymongo pandas plotly
 EXPOSE 8501
 
 # Copia los archivos de tu aplicación Streamlit al contenedor
-COPY . /app
+COPY . /app 
 
 # Comando para ejecutar la aplicación Streamlit
 # El app.py es el archivo que se ejecutará

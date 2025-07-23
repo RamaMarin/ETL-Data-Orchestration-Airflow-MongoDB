@@ -3,9 +3,11 @@ from datetime import datetime
 import requests
 import pymongo
 import json
+from mongo_utils import get_mongo_client # <<-- AÑADIDO: Importar la función de conexión
 
-# Configuración de MongoDB para datos crudos
-MONGO_CONNECTION_STRING = "mongodb+srv://rama_marin:Peta2017@bigdataupy5b.wk9joeh.mongodb.net/?retryWrites=true&w=majority&appName=BigDataUpy5B"
+# ELIMINAR ESTA LÍNEA:
+# MONGO_CONNECTION_STRING = "mongodb+srv://rama_marin:Peta2017@bigdataupy5b.wk9joeh.mongodb.net/?retryWrites=true&w=majority&appName=BigDataUpy5B"
+
 DATABASE_NAME = "covid_db"
 RAW_COLLECTION_NAME = "raw_covid_data"
 
@@ -33,7 +35,9 @@ def extract_and_load_raw_covid_data(**kwargs):
         covid_data_to_pass = raw_api_response.get('data')
 
         # --- Almacenar datos crudos en MongoDB (con idempotencia) ---
-        client = pymongo.MongoClient(MONGO_CONNECTION_STRING)
+        # CAMBIAR ESTA LÍNEA:
+        # client = pymongo.MongoClient(MONGO_CONNECTION_STRING)
+        client = get_mongo_client() # <<-- CAMBIADO: Usar la función centralizada
         db = client[DATABASE_NAME]
         raw_collection = db[RAW_COLLECTION_NAME]
         

@@ -3,11 +3,13 @@ from datetime import datetime
 import requests
 import pymongo
 import json
+from mongo_utils import get_mongo_client # <<-- AÑADIDO: Importar la función de conexión
 
-# Configuración de MongoDB para datos crudos de CoinMarketCap
-MONGO_CONNECTION_STRING = "mongodb+srv://rama_marin:Peta2017@bigdataupy5b.wk9joeh.mongodb.net/?retryWrites=true&w=majority&appName=BigDataUpy5B"
-DATABASE_NAME = "crypto_data" # Nueva base de datos para criptomonedas
-RAW_COLLECTION_NAME = "raw_coinmarketcap_listings" # Colección para datos crudos de CoinMarketCap
+# ELIMINAR ESTA LÍNEA:
+# MONGO_CONNECTION_STRING = "mongodb+srv://rama_marin:Peta2017@bigdataupy5b.wk9joeh.mongodb.net/?retryWrites=true&w=majority&appName=BigDataUpy5B"
+
+DATABASE_NAME = "crypto_data"
+RAW_COLLECTION_NAME = "raw_coinmarketcap_listings"
 
 # --- API KEY DE COINMARKETCAP ---
 COINMARKETCAP_API_KEY = "0590c2a5-d251-4b21-859e-11767ca74abc"
@@ -47,7 +49,9 @@ def extract_and_load_raw_coinmarketcap_data(**kwargs):
         crypto_listings_to_pass = raw_api_response.get('data')
         
         # --- Almacenar datos crudos en MongoDB (con idempotencia) ---
-        client = pymongo.MongoClient(MONGO_CONNECTION_STRING)
+        # CAMBIAR ESTA LÍNEA:
+        # client = pymongo.MongoClient(MONGO_CONNECTION_STRING)
+        client = get_mongo_client() # <<-- CAMBIADO: Usar la función centralizada
         db = client[DATABASE_NAME]
         raw_collection = db[RAW_COLLECTION_NAME]
         
@@ -57,10 +61,10 @@ def extract_and_load_raw_coinmarketcap_data(**kwargs):
 
         raw_api_response['ingestion_timestamp'] = datetime.now().isoformat()
         
-        raw_collection.insert_one(raw_api_response) 
+        raw_collection.insert_one(raw_api_response)
         print(f"Datos crudos de CoinMarketCap cargados exitosamente en {DATABASE_NAME}.{RAW_COLLECTION_NAME}.")
         
-        ti.xcom_push(key="raw_coinmarketcap_data_for_transform", value=crypto_listings_to_pass) 
+        ti.xcom_push(key="raw_coinmarketcap_data_for_transform", value=crypto_listings_to_pass)
         print(f"Registros extraídos de CoinMarketCap (crudos): {len(crypto_listings_to_pass)}")
 
         return crypto_listings_to_pass

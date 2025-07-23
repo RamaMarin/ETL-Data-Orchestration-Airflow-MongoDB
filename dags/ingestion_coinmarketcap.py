@@ -9,7 +9,7 @@ DATABASE_NAME = "crypto_data"
 RAW_COLLECTION_NAME = "raw_coinmarketcap_listings"
 
 # --- API KEY DE COINMARKETCAP ---
-COINMARKETCAP_API_KEY = "0590c2a5-d251-4b21-859e-11767ca74abc"
+COINMARKETCAP_API_KEY = "***"
 
 def extract_and_load_raw_coinmarketcap_data(**kwargs):
     """

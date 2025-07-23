@@ -52,7 +52,7 @@ This project ingests data from three different public APIs, ensuring relevance a
     * **Source:** CoinMarketCap API
     * **Endpoint Example:** `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=10&convert=USD`
     * **Relevance:** Provides real-time market data for leading cryptocurrencies, reflecting current financial and technological landscapes.
-    * **API Key:** Required (your API Key is `0590c2a5-d251-4b21-859e-11767ca74abc`).
+    * **API Key:** Required (your API Key is `***`).
 
 3.  **Population Data (México)**
     * **Domain:** Demographics / Social Trends

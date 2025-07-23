@@ -1,12 +1,9 @@
-from airflow.models.dag import DAG # No es estrictamente necesario aquí
+from airflow.models.dag import DAG 
 from datetime import datetime
 import requests
 import pymongo
 import json
-from mongo_utils import get_mongo_client # <<-- AÑADIDO: Importar la función de conexión
-
-# ELIMINAR ESTA LÍNEA:
-# MONGO_CONNECTION_STRING = "mongodb+srv://rama_marin:Peta2017@bigdataupy5b.wk9joeh.mongodb.net/?retryWrites=true&w=majority&appName=BigDataUpy5B"
+from mongo_utils import get_mongo_client 
 
 DATABASE_NAME = "covid_db"
 RAW_COLLECTION_NAME = "raw_covid_data"
@@ -35,9 +32,7 @@ def extract_and_load_raw_covid_data(**kwargs):
         covid_data_to_pass = raw_api_response.get('data')
 
         # --- Almacenar datos crudos en MongoDB (con idempotencia) ---
-        # CAMBIAR ESTA LÍNEA:
-        # client = pymongo.MongoClient(MONGO_CONNECTION_STRING)
-        client = get_mongo_client() # <<-- CAMBIADO: Usar la función centralizada
+        client = get_mongo_client() 
         db = client[DATABASE_NAME]
         raw_collection = db[RAW_COLLECTION_NAME]
         

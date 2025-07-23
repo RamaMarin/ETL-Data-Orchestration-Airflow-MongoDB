@@ -3,10 +3,7 @@ from datetime import datetime
 import requests
 import pymongo
 import json
-from mongo_utils import get_mongo_client # <<-- AÑADIDO: Importar la función de conexión
-
-# ELIMINAR ESTA LÍNEA:
-# MONGO_CONNECTION_STRING = "mongodb+srv://rama_marin:Peta2017@bigdataupy5b.wk9joeh.mongodb.net/?retryWrites=true&w=majority&appName=BigDataUpy5B"
+from mongo_utils import get_mongo_client 
 
 DATABASE_NAME = "crypto_data"
 RAW_COLLECTION_NAME = "raw_coinmarketcap_listings"

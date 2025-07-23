@@ -1,8 +1,7 @@
 # utils/mongo_utils.py
 from pymongo import MongoClient
 
-# La cadena de conexión para el contenedor Docker de MongoDB
-# 'mongodb' es el nombre del servicio definido en docker-compose.yml
+
 MONGO_URI = "mongodb://mongodb:27017/"
 
 def get_mongo_client():

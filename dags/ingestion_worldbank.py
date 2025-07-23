@@ -3,10 +3,8 @@ from datetime import datetime
 import requests
 import pymongo
 import json
-from mongo_utils import get_mongo_client # <<-- AÑADIDO: Importar la función de conexión
+from mongo_utils import get_mongo_client 
 
-# ELIMINAR ESTA LÍNEA:
-# MONGO_CONNECTION_STRING = "mongodb+srv://rama_marin:Peta2017@bigdataupy5b.wk9joeh.mongodb.net/?retryWrites=true&w=majority&appName=BigDataUpy5B"
 
 DATABASE_NAME = "population_data" # Nueva base de datos para datos de población
 RAW_COLLECTION_NAME = "raw_worldbank_population" # Colección para datos crudos de población

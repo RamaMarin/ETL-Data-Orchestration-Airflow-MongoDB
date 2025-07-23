@@ -3,7 +3,7 @@ from datetime import datetime
 import pymongo
 import json
 from bson.objectid import ObjectId
-from mongo_utils import get_mongo_client # Importación directa, como lo tienes ahora
+from mongo_utils import get_mongo_client 
 
 
 def convert_objectid_to_str(obj):

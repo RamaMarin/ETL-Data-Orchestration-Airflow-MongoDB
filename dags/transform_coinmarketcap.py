@@ -4,10 +4,7 @@ import pandas as pd
 import pymongo # Se mantiene por si acaso, aunque no se usa para carga aquí
 from bson.objectid import ObjectId # Importar ObjectId para verificar y convertir
 
-# ELIMINAR ESTA LÍNEA:
-# MONGO_CONNECTION_STRING = "mongodb+srv://rama_marin:Peta2017@bigdataupy5b.wk9joeh.mongodb.net/?retryWrites=true&w=majority&appName=BigDataUpy5B"
 
-# NOTA: La conexión a MongoDB ya no es necesaria en este archivo ya que la carga se hace en 'load_mongo.py'
 DATABASE_NAME = "crypto_data"
 PROCESSED_COLLECTION_NAME = "processed_coinmarketcap_data" # Se usa para el nombre de la colección en la carga final
 

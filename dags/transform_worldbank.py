@@ -4,8 +4,6 @@ import pandas as pd # Se mantiene por si acaso, aunque no se usa intensivamente 
 import pymongo # Se mantiene por si acaso, aunque no se usa para carga aquí
 from bson.objectid import ObjectId # Importar ObjectId para verificar y convertir
 
-# ELIMINAR ESTA LÍNEA:
-# MONGO_CONNECTION_STRING = "mongodb+srv://rama_marin:Peta2017@bigdataupy5b.wk9joeh.mongodb.net/?retryWrites=true&w=majority&appName=BigDataUpy5B"
 
 # NOTA: La conexión a MongoDB ya no es necesaria en este archivo ya que la carga se hace en 'load_mongo.py'
 DATABASE_NAME = "population_data"
